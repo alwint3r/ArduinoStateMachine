@@ -24,6 +24,8 @@ public:
     void removeState(StateClass *state);
     virtual void event(const StateEvent &event) = 0;
     virtual void eventFromISR(const StateEvent &event) = 0;
+    virtual void event(const uint32_t eventId);
+    virtual void eventFromISR(const uint32_t eventId);
 
 protected:
     void processEvent(StateEvent *event);

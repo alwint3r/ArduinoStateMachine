@@ -23,6 +23,16 @@ void StateMachine::removeState(StateClass *state)
     _stateMap->erase(state->getName());
 }
 
+void StateMachine::event(const uint32_t eventId)
+{
+    event({eventId, 0});
+}
+
+void StateMachine::eventFromISR(const uint32_t eventId)
+{
+    eventFromISR({eventId, 0});
+}
+
 void StateMachine::processEvent(StateEvent *event)
 {
     if (_currentState != NULL)
