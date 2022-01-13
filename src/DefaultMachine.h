@@ -4,18 +4,45 @@
 #include "StateMachine.h"
 #include <vector>
 
-class DefaultMachine: public StateMachine {
+template <typename T, class C>
+class DefaultMachine : public StateMachine<T, C>
+{
 public:
-    DefaultMachine();
-    ~DefaultMachine();
+    DefaultMachine()
+    {
+        _events = new std::vector<StateEvent<T, C>>();
+    }
 
-    void run();
+    ~DefaultMachine()
+    {
+        delete _events;
+        _events = nullptr;
+    }
+
+    void run()
+    {
+        if (_events->size() > 0)
+        {
+            StateEvent<T, C> event = _events->at(0);
+
+            this->processEvent(&event);
+
+            _events->erase(_events->begin());
+        }
+    }
 
 protected:
-    void dispatchEvent(const StateEvent &event) override;
-    void dispatchEventFromISR(const StateEvent &event) override;
+    void dispatchEvent(const StateEvent<T, C> &event) override
+    {
+        _events->push_back(event);
+    }
+
+    void dispatchEventFromISR(const StateEvent<T, C> &event) override
+    {
+        _events->push_back(event);
+    }
 
 private:
-    std::vector<StateEvent> *_events;
+    std::vector<StateEvent<T, C>> *_events;
 };
 #endif // DEFAULT_MACHINE_H

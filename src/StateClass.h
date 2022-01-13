@@ -4,11 +4,20 @@
 #include "StateTypedefs.h"
 #include <string>
 
+template<typename T, class C>
 class StateClass
 {
 public:
-    StateClass(std::string name);
-    ~StateClass();
+    using StateFunction = std::function<void()>;
+    using StateEventFunction = std::function<std::string(StateEvent<T, C> *)>;
+
+    StateClass(std::string name): _name(name)
+    {
+    }
+
+    ~StateClass()
+    {
+    }
 
     void setName(std::string name)
     {
@@ -61,7 +70,29 @@ public:
         }
     }
 
-    std::string process(StateEvent *event);
+    std::string process(StateEvent<T, C> *event)
+    {
+        std::string result;
+
+        if (_child != NULL)
+        {
+            result = _child->process(event);
+        }
+        else if (_onEvent != nullptr)
+        {
+            result = _onEvent(event);
+        }
+        else if (_parent != NULL)
+        {
+            result = _parent->process(event);
+        }
+        else
+        {
+            result = "";
+        }
+
+        return result;
+    }
 
 protected:
     std::string _name;

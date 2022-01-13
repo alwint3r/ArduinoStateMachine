@@ -5,18 +5,18 @@
 #include <string>
 #include <cstdint>
 #include <map>
-
-class StateClass;
-
-using StateEvent = struct __state_event
+template<typename T, class C>
+class StateEvent
 {
-    uint32_t id;
-    void *context;
-};
+public:
+    StateEvent(T id, C *context)
+    {
+        this->id = id;
+        this->context = context;
+    }
 
-using StateFunction = std::function<void()>;
-using StateEventFunction = std::function<std::string(StateEvent *)>;
-using StateMap = std::map<std::string, StateClass *>;
-using StatePair = std::pair<std::string, StateClass *>;
+    T id;
+    C *context;
+};
 
 #endif
