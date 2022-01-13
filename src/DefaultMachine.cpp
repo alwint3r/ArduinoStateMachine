@@ -11,12 +11,12 @@ DefaultMachine::~DefaultMachine()
     _events = NULL;
 }
 
-void DefaultMachine::event(const StateEvent& event)
+void DefaultMachine::dispatchEvent(const StateEvent& event)
 {
     _events->push_back(event);
 }
 
-void DefaultMachine::eventFromISR(const StateEvent& event)
+void DefaultMachine::dispatchEventFromISR(const StateEvent& event)
 {
     _events->push_back(event);
 }

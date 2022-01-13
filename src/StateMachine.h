@@ -5,6 +5,7 @@
 #include <string>
 #include "StateTypedefs.h"
 #include "StateClass.h"
+#include <type_traits>
 
 typedef std::map<std::string, StateClass *> StateMap;
 
@@ -21,14 +22,37 @@ public:
 
     void addState(StateClass *state);
     void removeState(StateClass *state);
-    virtual void eventById(uint32_t eventId);
-    virtual void eventById(int eventId);
-    virtual void event(const StateEvent &event) = 0;
-    virtual void eventByIdFromISR(uint32_t eventId);
-    virtual void eventByIdFromISR(int eventId);
-    virtual void eventFromISR(const StateEvent &event) = 0;
+
+    template<typename T>
+    void event(const T& eventId)
+    {
+        if constexpr (std::is_integral<T>::value)
+        {
+            dispatchEvent({static_cast<uint32_t>(eventId), nullptr});
+        }
+        else
+        {
+            dispatchEvent(eventId);
+        }
+    }
+
+    template<typename T>
+    void eventFromISR(const T& eventId)
+    {
+        if constexpr (std::is_integral<T>::value)
+        {
+            dispatchEventFromISR({static_cast<uint32_t>(eventId), nullptr});
+        }
+        else
+        {
+            dispatchEventFromISR(eventId);
+        }
+    }
 
 protected:
+    virtual void dispatchEvent(const StateEvent &event) = 0;
+    virtual void dispatchEventFromISR(const StateEvent &event) = 0;
+
     void processEvent(StateEvent *event);
 
 protected:

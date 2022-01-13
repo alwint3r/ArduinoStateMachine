@@ -9,10 +9,12 @@ public:
     DefaultMachine();
     ~DefaultMachine();
 
-    void event(const StateEvent &event) override;
-    void eventFromISR(const StateEvent &event) override;
-
     void run();
+
+protected:
+    void dispatchEvent(const StateEvent &event) override;
+    void dispatchEventFromISR(const StateEvent &event) override;
+
 private:
     std::vector<StateEvent> *_events;
 };
