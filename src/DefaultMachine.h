@@ -8,12 +8,12 @@
 class DefaultMachine: public StateMachine {
 public:
     DefaultMachine();
-    virtual ~DefaultMachine();
+    ~DefaultMachine();
 
-    virtual void event(const StateEvent &event);
-    virtual void eventFromISR(const StateEvent &event);
+    void event(const StateEvent &event) override;
+    void eventFromISR(const StateEvent &event) override;
 
-    virtual void run();
+    void run();
 private:
     std::vector<StateEvent> *_events;
 };

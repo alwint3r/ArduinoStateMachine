@@ -61,7 +61,7 @@ public:
         }
     }
 
-    StateProcessResult process(StateEvent *event);
+    std::string process(StateEvent *event);
 
 protected:
     std::string _name;

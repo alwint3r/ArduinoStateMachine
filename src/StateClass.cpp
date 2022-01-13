@@ -8,9 +8,9 @@ StateClass::~StateClass()
 {
 }
 
-StateProcessResult StateClass::process(StateEvent *event)
+std::string StateClass::process(StateEvent *event)
 {
-    StateProcessResult result;
+    std::string result;
 
     if (_child != NULL)
     {
@@ -26,7 +26,7 @@ StateProcessResult StateClass::process(StateEvent *event)
     }
     else
     {
-        result = {StateChange::STATE_CHANGE_NONE, nullptr};
+        result = "";
     }
 
     return result;

@@ -15,7 +15,7 @@ StateMachine::~StateMachine()
 
 void StateMachine::addState(StateClass *state)
 {
-    _stateMap->insert(std::pair<std::string, StateClass *>(state->getName(), state));
+    _stateMap->insert(StatePair(state->getName(), state));
 }
 
 void StateMachine::removeState(StateClass *state)
@@ -48,22 +48,16 @@ void StateMachine::processEvent(StateEvent *event)
     if (_currentState != NULL)
     {
         auto result = _currentState->process(event);
-        if (result.change == StateChange::STATE_CHANGE_NONE)
+        if (result.size() < 0)
         {
             return;
         }
 
-        if (result.change == StateChange::STATE_CHANGE_CHANGED)
+        if (auto foundState = _stateMap->find(result); foundState != _stateMap->end())
         {
-
-            auto findState = _stateMap->find(result.nextStateName);
-            if (findState != _stateMap->end())
-            {
-                auto nextState = findState->second;
-                _currentState->exit();
-                _currentState = nextState;
-                _currentState->enter();
-            }
+            _currentState->exit();
+            _currentState = foundState->second;
+            _currentState->enter();
         }
     }
 }

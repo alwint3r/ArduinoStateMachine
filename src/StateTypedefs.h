@@ -4,18 +4,13 @@
 #include <functional>
 #include <string>
 #include "StateEvent.h"
+#include <map>
 
-typedef enum {
-    STATE_CHANGE_NONE,
-    STATE_CHANGE_CHANGED,
-} StateChange;
+class StateClass;
 
-typedef struct StateProcessResult {
-    StateChange change;
-    std::string nextStateName;
-} StateProcessResult;
-
-typedef std::function<void()> StateFunction;
-typedef std::function<StateProcessResult(StateEvent *)> StateEventFunction;
+using StateFunction = std::function<void()>;
+using StateEventFunction = std::function<std::string(StateEvent *)>;
+using StateMap = std::map<std::string, StateClass *>;
+using StatePair = std::pair<std::string, StateClass *>;
 
 #endif
