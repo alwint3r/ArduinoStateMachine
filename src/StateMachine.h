@@ -5,7 +5,6 @@
 #include <string>
 #include "StateTypedefs.h"
 #include "StateClass.h"
-#include "StateEvent.h"
 
 typedef std::map<std::string, StateClass *> StateMap;
 
