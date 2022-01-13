@@ -2,7 +2,6 @@
 #define DEFAULT_MACHINE_H
 
 #include "StateMachine.h"
-#include "StateEvent.h"
 #include <vector>
 
 class DefaultMachine: public StateMachine {
