@@ -3,10 +3,16 @@
 
 #include <functional>
 #include <string>
-#include "StateEvent.h"
+#include <cstdint>
 #include <map>
 
 class StateClass;
+
+using StateEvent = struct __state_event
+{
+    uint32_t id;
+    void *context;
+};
 
 using StateFunction = std::function<void()>;
 using StateEventFunction = std::function<std::string(StateEvent *)>;
