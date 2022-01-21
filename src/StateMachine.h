@@ -73,7 +73,15 @@ protected:
                 return;
             }
 
+#if __cpp_structured_bindings >= 201606
+            // C++17
+
             if (auto foundState = _stateMap->find(result); foundState != _stateMap->end())
+#else
+            // C++14 and below
+            auto foundState = _stateMap->find(result);
+            if (foundState != _stateMap->end())
+#endif
             {
                 _currentState->exit();
                 _currentState = foundState->second;
